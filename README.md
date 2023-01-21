@@ -1,6 +1,6 @@
 ![Phalanx](bin/img/phalanx_title.png)
 
-Phalanx is a **Cassandra Migration utility written in Swift**, with ergonimics inspired by flyway.
+Phalanx is a **Cassandra Migration utility written in Swift**, with ergonomics inspired by flyway.
 
 ### Motivation
 
@@ -9,7 +9,7 @@ There are other Cassandra migration tools written in Java and Python.
 Phalanx is geared for developers already writing a Swift backend/microservice, who might
 like to stay within the scope of a familiar toolchain/ecosystem.
 
-Phalanx is based on [Apple's open source Cassandra client library](https://github.com/apple/swift-cassandra-client)
+Phalanx is based on [Apple's open source Cassandra client library](https://github.com/apple/swift-cassandra-client).
 
 ### Installation
 
@@ -85,8 +85,8 @@ $ phalanx --help
 ### Migration Files
 
 Migration files should all be grouped into a single directory. Phalanx will
-interrogate the contents of the migration directory for any files that look
-like migrations.
+look through the contents of the migration directory for any files that match
+the migration file pattern.
 
 You can configure the file prefix, extension, and version-description
 separator that define a migration's file name structure.
