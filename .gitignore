@@ -1,0 +1,10 @@
+.DS_Store
+.swiftpm
+
+## User settings
+/*.xcodeproj
+
+# Swift Package Manager
+Package.resolved
+.build/
+

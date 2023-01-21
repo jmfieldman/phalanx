@@ -1,0 +1,140 @@
+# Phalanx State Table
+# Optional; Default: phalanx_state
+#
+# Command line override: --phalanxStateTable <table>
+#
+# Controls the name of the table that is created in your keyspace to
+# track the current migration state.
+phalanxStateTable: phalanx_state
+
+# Contains configs for connecting to your Cassandra Cluster
+client:
+
+  # Hosts
+  # Required
+  #
+  # Command line override: --host <address>
+  # Multiple hosts example: --host <address1> --host <address2>
+  #
+  # Enumerate the addresses of your cluster contact points.
+  hosts:
+    - "127.0.0.1"
+
+  # Port
+  # Required
+  #
+  # Command line override: -p, --port <port>
+  #
+  # The port to use when connecting to the cluster contact point.
+  port: 9042
+
+  # Protocol Version
+  # Required
+  #
+  # Command line override: --protocolVersion <version>
+  #
+  # The Cassandra protocol version to use.
+  protocolVersion: 4
+
+  # Keyspace
+  # Required
+  #
+  # Command line override: -k, --keyspace <keyspace>
+  #
+  # The keyspace to apply the migrations to.
+  keyspace: phalanx_test_keyspace
+
+  # Consistency
+  # Optional; default: serial
+  #
+  # Command line override: --consistency <consistency>
+  #
+  # The consistency level to use when invoking migrations.
+  # This can be overridden per-migration using the migration-
+  # file's metadata.
+  #
+  # Allowed values are: one, two, three, quorum, serial, any
+  consistency: serial
+
+  # Username
+  # Optional; default: null
+  #
+  # Command line override: -u, --username <username>
+  #
+  # The username to use when connecting to the cluster
+  #
+  ### username: <username>
+
+  # Password
+  # Optional; default: null
+  #
+  # Command line override: --password <password>
+  #
+  # The password to use when connecting to the cluster
+  #
+  ### password: <password>
+
+# Various migration configs
+migration:
+
+  # Invocation Delay
+  # Optional; default: 0
+  #
+  # Command line override: -d, --invocationDelay <integer>
+  #
+  # The invocation delay to apply after each migration step (in
+  # case you want some settling time between invocations.)
+  #
+  # This can be overridden inside a specific migration using its
+  # migration metadata.
+  invocationDelay: 0
+
+  # Directory
+  # Required
+  #
+  # Command line override: --migrationDirectory <path>
+  #
+  # The relative path (from the current working directory of the command
+  # execution) to the folder that contains the migration files.
+  directory: "Examples/Migration"
+
+  # File Separator
+  # Optional; default: -
+  #
+  # Command line override: --migrationFileSeparator <separator>
+  #
+  # The string that separates the version from the rest of the file description.
+  # For example, using the separator "-" and the filename "001-hello_world.cql"
+  # would resolve to version=1 and description="hello world"
+  fileSeparator: "-"
+
+  # File Prefix
+  # Optional; default: null
+  #
+  # Command line override: --migrationFilePrefix <prefix>
+  #
+  # The string that is placed in front of the filename. For example, if this
+  # was set to "v" you would need to name your files "v001-hello_world.cql"
+  ### filePrefix:
+
+  # File Extension
+  # Optional; default: cql
+  #
+  # Command line override: --migrationFileExtension <ext>
+  #
+  # Migration files will only be detected that have this file extension.
+  fileExtension: cql
+
+  # Ignore Historical Hashes
+  # Optional; default: false
+  #
+  # Command line override: --ignoreHistoricalHashes
+  # (does not take parameters, presence of the flag -> true)
+  #
+  # If false, the migration engine will verify that the migration files
+  # in your directory that represent already-applied migrations still
+  # match their historical hashes. This is useful to verify migration
+  # consistency and help ensure you are not applying new migrations
+  # over an incorrect state.
+  ignoreHistoricalHashes: false
+

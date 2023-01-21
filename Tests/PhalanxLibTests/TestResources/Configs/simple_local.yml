@@ -1,0 +1,11 @@
+phalanxStateTable: phalanx_state
+client:
+  hosts:
+    - "127.0.0.1"
+  port: 9042
+  protocolVersion: 4
+  consistency: serial
+  keyspace: phalanx_test_keyspace
+migration:
+  fileSeparator: "-"
+  fileExtension: "cql"

@@ -1,0 +1,7 @@
+blah blah parser error!!
+client:
+  hosts:
+    - "127.0.0.1"
+  port: 9042
+  protocolVersion: 4
+  consistency: serial
