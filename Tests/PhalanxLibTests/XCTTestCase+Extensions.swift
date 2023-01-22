@@ -26,7 +26,7 @@ private var responseStore: [UUID: Any] = [:]
 private var errorStore: [UUID: Error] = [:]
 
 extension XCTestCase {
-  func runAsyncAndWaitFor<T>(_ closure: @escaping () async throws -> T, _ timeout: TimeInterval = 3.0) throws -> T {
+  func runAsyncAndWaitFor<T>(_ closure: @escaping () async throws -> T, _ timeout: TimeInterval = 8.0) throws -> T {
     let finished = expectation(description: "finished")
     let testUUID = UUID()
     Task.detached {

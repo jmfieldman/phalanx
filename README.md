@@ -123,12 +123,12 @@ Ensure that an empty line is present after the metadata to end YAML parsing.
 
 ### Important Concepts
 
-**_One Keyspace Per Phalanx Invocation_**
+**_One Keyspace Per Invocation_**
 
-Any given Phalanx invocation will only operate on the _single keyspace_
-defined in the config or command line. If you want to setup migrations
+Any single Phalanx invocation will only operate on the _one_ keyspace defined
+in the config or command line. If you want to setup migrations
 for multiple keyspaces they will need to be in isolated directories,
-and you will need to invoke Phalanx separately for each independent keyspace.
+and you will need to invoke Phalanx separately for each keyspace.
 
 **_Migration 0 is Reserved for Keyspace Creation_**
 
@@ -140,8 +140,24 @@ This means that the migration tagged version 0 (e.g. `000-create_keyspace.cql`)
 _may only contain a command that starts with `CREATE KEYSPACE`_.
 
 If you do not want Phalanx to be responsible for keyspace creation, you can
-create the keyspace yourself, and begin migration files with version 1. Phalanx will
-throw an error if the keyspace does not exist and you are missing version 0.
+create the keyspace yourself, and begin migration files with version 1. 
+
+Phalanx will throw an error if the keyspace does not exist and you are 
+missing version 0.
+
+**_Use the Keyspace Placeholder for Mirrored Keyspaces_**
+
+In some cases, you may want the same migration chain to exist for multiple
+keyspaces. For example, you may use a single local Cassandra node for local 
+development, unit tests, and a local CI agent. 
+
+To keep the data in these scopes properly siloed, you would use a different 
+keyspace for each (e.g. project_local, project_tests, project_ci, etc)
+
+In this case, you can use the placeholder `$${{KEYSPACE}}$$` in your migration
+files, and the migration engine will automatically replace it with the
+currently-executing keyspace. This is especially useful for the zero-version
+migration that creates the keyspace.
 
 **_Migration Files can only Contain One Command Each_**
 
