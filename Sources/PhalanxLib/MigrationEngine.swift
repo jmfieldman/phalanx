@@ -1,6 +1,8 @@
 import CassandraClient
 import Foundation
 
+private let kKeyspacePlaceholder = "$${{KEYSPACE}}$$"
+
 public enum MigrationEngineError: Error, Equatable {
   case invalidConfig(String)
   case invalidFileMetadata(String)
@@ -248,7 +250,12 @@ public final class MigrationEngine {
       throw MigrationEngineError.noKeyspaceMigration("Keyspace creation migration (version 0) requires a CREATE KEYSPACE command.")
     }
 
-    _ = try await neutralClient.query(migration.contents)
+    _ = try await neutralClient.query(
+      migration.contents.replacingOccurrences(
+        of: kKeyspacePlaceholder,
+        with: keyspace
+      )
+    )
 
     // Sanity check that migration 0 created the correct keyspace
     let newState = try await detectMigrationState()
@@ -354,7 +361,12 @@ public final class MigrationEngine {
       // Execute the invocation
       let startTime = Date()
       do {
-        _ = try await invocationClient.query(migration.contents)
+        _ = try await invocationClient.query(
+          migration.contents.replacingOccurrences(
+            of: kKeyspacePlaceholder,
+            with: keyspace
+          )
+        )
       } catch {
         printInfo?("Error in migration version \(migration.version):")
         throw MigrationEngineError.migrationError(error.localizedDescription)

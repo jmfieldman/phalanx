@@ -64,4 +64,29 @@ final class MigrationTests: MigrationTestCase {
 
     try dropKeyspace()
   }
+
+  /// Verify that a basic migration works as exepcted
+  func testKeyspacePlaceholder() throws {
+    var config = try Config.from(path: pathTo(config: "simple_local.yml"))
+    config?.migration?.directory = pathTo(migrations: "TestKeyspacePlaceholder")
+    XCTAssertNotNil(config)
+
+    let engine = try MigrationEngine(config: config!)
+    let migrationState = try runAsyncAndWaitFor { try await engine.detectMigrationState() }
+    let fileMigrations = try engine.detectFileMigrations()
+
+    try runAsyncAndWaitFor {
+      try await engine.executeMigration(
+        migrationState: migrationState,
+        fileMigrations: fileMigrations
+      )
+    }
+
+    // At this point phase migration is complete and the first table should be present
+    try runAsyncAndWaitFor { [testClient, keyspace] in
+      _ = try await testClient.query("DESC \(keyspace).some_name_table")
+    }
+
+    try dropKeyspace()
+  }
 }
