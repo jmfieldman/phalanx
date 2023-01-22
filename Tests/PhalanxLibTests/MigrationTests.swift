@@ -64,7 +64,7 @@ final class MigrationTests: MigrationTestCase {
 
     try dropKeyspace()
   }
-  
+
   /// Verify that a basic migration works as exepcted
   func testKeyspacePlaceholder() throws {
     var config = try Config.from(path: pathTo(config: "simple_local.yml"))
